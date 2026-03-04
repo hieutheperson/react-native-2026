@@ -1,12 +1,50 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { View, FlatList, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { Searchbar, Text, Chip } from 'react-native-paper';
+import { Searchbar, Text, Chip, IconButton } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { mockProducts, mockCategories } from '../../services/mockData';
 
 export default function SearchScreen({ navigation }) {
   const [query, setQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [sortBy, setSortBy] = useState(null); // 'price_asc', 'price_desc', 'popular', 'discount'
+  const [sortBy, setSortBy] = useState(null);
+  const [searchHistory, setSearchHistory] = useState([]);
+  const [showHistory, setShowHistory] = useState(true);
+
+  useEffect(() => {
+    loadHistory();
+  }, []);
+
+  const loadHistory = async () => {
+    try {
+      const data = await AsyncStorage.getItem('searchHistory');
+      if (data) setSearchHistory(JSON.parse(data));
+    } catch (e) {}
+  };
+
+  const saveToHistory = async (text) => {
+    if (!text.trim()) return;
+    const updated = [text.trim(), ...searchHistory.filter(h => h !== text.trim())].slice(0, 10);
+    setSearchHistory(updated);
+    await AsyncStorage.setItem('searchHistory', JSON.stringify(updated));
+  };
+
+  const clearHistory = async () => {
+    setSearchHistory([]);
+    await AsyncStorage.removeItem('searchHistory');
+  };
+
+  const handleSearch = (text) => {
+    setQuery(text);
+    setShowHistory(!text.trim());
+  };
+
+  const handleSubmit = () => {
+    if (query.trim()) {
+      saveToHistory(query.trim());
+      setShowHistory(false);
+    }
+  };
 
   const filteredProducts = useMemo(() => {
     let results = [...mockProducts];
@@ -61,10 +99,28 @@ export default function SearchScreen({ navigation }) {
     <View style={styles.container}>
       <Searchbar
         placeholder="Tìm kiếm món ăn, quán..."
-        onChangeText={setQuery}
+        onChangeText={handleSearch}
+        onSubmitEditing={handleSubmit}
         value={query}
         style={styles.searchBar}
       />
+
+      {/* Search history */}
+      {showHistory && searchHistory.length > 0 && (
+        <View style={styles.historySection}>
+          <View style={styles.historyHeader}>
+            <Text style={styles.historyTitle}>Lịch sử tìm kiếm</Text>
+            <IconButton icon="delete-outline" size={18} onPress={clearHistory} />
+          </View>
+          <View style={styles.historyChips}>
+            {searchHistory.map((h, i) => (
+              <Chip key={i} onPress={() => { setQuery(h); setShowHistory(false); saveToHistory(h); }} style={styles.historyChip} icon="history">
+                {h}
+              </Chip>
+            ))}
+          </View>
+        </View>
+      )}
 
       {/* Category filter */}
       <FlatList
@@ -147,4 +203,10 @@ const styles = StyleSheet.create({
   discount: { fontSize: 11, color: '#fff', backgroundColor: '#FF3B30', borderRadius: 4, paddingHorizontal: 5, marginLeft: 6 },
   sold: { fontSize: 11, color: '#999', marginTop: 4 },
   empty: { textAlign: 'center', color: '#999', marginTop: 40 },
+  // History
+  historySection: { paddingHorizontal: 12, marginBottom: 8 },
+  historyHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  historyTitle: { fontSize: 14, fontWeight: '600', color: '#333' },
+  historyChips: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
+  historyChip: { marginBottom: 4, backgroundColor: '#f0f0f0' },
 });
