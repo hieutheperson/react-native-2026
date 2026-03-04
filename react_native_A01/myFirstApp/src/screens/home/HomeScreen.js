@@ -111,9 +111,11 @@ export default function HomeScreen({ navigation }) {
         decelerationRate="fast"
       />
 
-      {/* Categories - horizontal scroll */}
+      {/* Categories - horizontal scroll (A05) */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Danh mục</Text>
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>📂 Danh mục</Text>
+        </View>
         <FlatList
           data={mockCategories}
           renderItem={renderCategory}
@@ -124,9 +126,14 @@ export default function HomeScreen({ navigation }) {
         />
       </View>
 
-      {/* Top 10 best sellers - horizontal */}
+      {/* Top 10 best sellers - horizontal (A05) */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>🔥 Bán chạy nhất</Text>
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>🔥 Top 10 bán chạy nhất</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Search')}>
+            <Text style={styles.seeAll}>Xem tất cả →</Text>
+          </TouchableOpacity>
+        </View>
         <FlatList
           data={topSelling}
           renderItem={renderHorizontalProduct}
@@ -137,9 +144,14 @@ export default function HomeScreen({ navigation }) {
         />
       </View>
 
-      {/* Top 20 discounted - 2 column grid */}
+      {/* Top 20 discounted - 2 column grid (A05) */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>🏷️ Giảm giá sốc</Text>
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>🏷️ Giảm giá sốc (Top 20)</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Search')}>
+            <Text style={styles.seeAll}>Xem tất cả →</Text>
+          </TouchableOpacity>
+        </View>
         <FlatList
           data={discounted}
           renderItem={renderGridProduct}
@@ -162,7 +174,9 @@ const styles = StyleSheet.create({
   avatar: { width: 44, height: 44, borderRadius: 22, borderWidth: 2, borderColor: '#FF6B35' },
   searchBar: { marginHorizontal: 16, marginBottom: 12, elevation: 2, borderRadius: 12, backgroundColor: '#fff' },
   section: { marginBottom: 20 },
+  sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingRight: 16 },
   sectionTitle: { fontSize: 18, fontWeight: 'bold', color: '#333', marginLeft: 16, marginBottom: 12 },
+  seeAll: { fontSize: 13, color: '#FF6B35', fontWeight: '600' },
   // Categories
   categoryList: { paddingHorizontal: 12 },
   categoryItem: { alignItems: 'center', marginHorizontal: 6, width: 72 },
