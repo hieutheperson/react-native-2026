@@ -1,12 +1,24 @@
-import React from 'react';
-import { View, ScrollView, FlatList, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, ScrollView, FlatList, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { Text, Card, Chip, Searchbar } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { mockCategories, mockProducts } from '../../services/mockData';
 import useAuthStore from '../../store/authStore';
+import useCartStore from '../../store/cartStore';
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
+const BANNERS = [
+  { id: '1', title: '🎉 Giảm 30% đơn đầu tiên', subtitle: 'Áp dụng cho tất cả món ăn', color: '#FF6B35' },
+  { id: '2', title: '🚚 Freeship đơn từ 50K', subtitle: 'Giao nhanh trong 30 phút', color: '#4CAF50' },
+  { id: '3', title: '🔥 Flash Sale 12H-14H', subtitle: 'Giảm đến 50% nhiều món hot', color: '#E91E63' },
+];
 
 export default function HomeScreen({ navigation }) {
   const { user } = useAuthStore();
+  const loadCart = useCartStore(s => s.loadCart);
+
+  useEffect(() => { loadCart(); }, []);
 
   // Top 10 best sellers (sorted by sold count)
   const topSelling = [...mockProducts].sort((a, b) => b.sold - a.sold).slice(0, 10);
@@ -80,6 +92,24 @@ export default function HomeScreen({ navigation }) {
           icon="magnify"
         />
       </TouchableOpacity>
+
+      {/* Promotional banners */}
+      <FlatList
+        data={BANNERS}
+        renderItem={({ item }) => (
+          <View style={[styles.bannerCard, { backgroundColor: item.color }]}>  
+            <Text style={styles.bannerTitle}>{item.title}</Text>
+            <Text style={styles.bannerSubtitle}>{item.subtitle}</Text>
+          </View>
+        )}
+        keyExtractor={item => item.id}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.bannerList}
+        pagingEnabled
+        snapToInterval={SCREEN_WIDTH - 40}
+        decelerationRate="fast"
+      />
 
       {/* Categories - horizontal scroll */}
       <View style={styles.section}>
@@ -157,4 +187,9 @@ const styles = StyleSheet.create({
   gridProductOriginal: { fontSize: 12, color: '#999', textDecorationLine: 'line-through' },
   discountBadge: { position: 'absolute', top: 8, right: 8, backgroundColor: '#FF3B30', borderRadius: 6, paddingHorizontal: 6, paddingVertical: 2, zIndex: 1 },
   discountText: { color: '#fff', fontSize: 11, fontWeight: 'bold' },
+  // Banners
+  bannerList: { paddingHorizontal: 16, marginBottom: 16 },
+  bannerCard: { width: SCREEN_WIDTH - 48, marginRight: 12, borderRadius: 16, padding: 20, justifyContent: 'center' },
+  bannerTitle: { fontSize: 18, fontWeight: 'bold', color: '#fff' },
+  bannerSubtitle: { fontSize: 13, color: '#ffffffcc', marginTop: 4 },
 });
