@@ -1,0 +1,60 @@
+Xây dựng mobile app giao đồ ăn sử dụng react native (user), flutter (admin) (mình chỉ làm bên user)
+
+DEADLINE: 6/3/2026
+Repo Git: https://github.com/hieutheperson/react-native-2026.git
+
+
+**Yêu cầu chung
+Triển khai dự án với mô hình cấu trúc sau
+Mô hình chuẩn nhất để làm app React Native hiện nay là sử dụng Expo framework kết hợp với cấu trúc thư mục chức năng (feature-based) hoặc kiến trúc 3 lớp (3-layer architecture) với mô hình kiến trúc MVC, MVP, MVVM. Cách tiếp cận này giúp tối ưu hóa thời gian phát triển, dễ bảo trì và mở rộng. Cấu trúc bao gồm  
+Mô hình thư mục chuẩn gợi ý: 
+• /assets: Chứa hình ảnh, fonts, icons. 
+• /components: Các UI components có thể tái sử dụng (Button, Input, Card). 
+• /screens: Các màn hình chính của ứng dụng (LoginScreen, HomeScreen). 
+• /navigation: Cấu hình điều hướng (React Navigation). 
+• /services / /api: Chứa logic gọi API, xử lý dữ liệu. 
+• /store / /redux: Quản lý trạng thái ứng dụng (Redux, Context API, hoặc Zustand). 
+• /utils / /hooks: Các hàm bổ trợ (helper functions) và custom hooks. 
+• App.js / index.js: Điểm khởi đầu của ứng dụng.  
+Các yếu tố kỹ thuật chuẩn: 
+• Navigation: React Navigation (thư viện phổ biến nhất). 
+• State Management: Redux Toolkit hoặc Zustand. 
+API: tùy mỗi nhóm nhưng không dùng API có sẵn như Firebase,...
+Resource: lưu trên Server API hoặc Cloudanry, S3
+
+
+Bài A02: Chức năng đăng ký, đăng nhập, Quên mật khẩu
+Yêu cầu: Nhóm thảo luận viết API chung của nhóm và từng sinh viên thực hiện chức năng Register với OTP activation, Forgot Password với OTP và Login với JWT.
+
+Bài A03: Xây dựng trang chủ của ứng dụng
+Yêu cầu: 
+Xây dựng trang chủ của đề tài có sử dụng Tailwind CSS (https://tailwindcss.com) hoặc các CSS tương đương để làm giao diện đẹp (react-native-paper làm UI/UX cho cả IOS và Android). Sử dụng React Navigation để điều hướng cho ứng dụng (, API cho trang chủ dùng chung của nhóm đề tài.
+Sử dụng RealM hoặc tương đương để lưu thông tin tài khoản sau khi đăng nhập để hiển thị lên cho trang chủ (làm tới 12g30 ngày 29/01/2026)
+Bài A04: Chức năng Profile, Tìm kiếm, Chi tiết
+Yêu cầu:
+Chức năng Profile (chỉnh sửa avatar, họ tên, đổi mật khẩu, đổi số điện thoại và email có gửi OTP xác nhận)  của người dùng đã đăng nhập thành công (API và UI)
+Chức năng tìm kiếm, lọc trên trang chủ (API và UI).
+Chức năng xem Chi tiết sản phẩm từ trang chủ, từ kết quả tìm kiếm, lọc (API và UI).
+Bài A05: Xây dựng lại trang chủ của ứng dụng
+Yêu cầu:
+Chức năng hiển thị danh sách category theo chiều ngang (slide được) (API + UI) 
+Chức năng hiển thị 10 sản phẩm bán chạy nhất (có số lượng bán nhiều nhất) hiển thị theo chiều ngang của màn hình (API và UI)
+Chức năng hiển thị 20 sản phẩm (chia làm 02 cột của màn hình) sắp xếp theo chương trình giảm giá từ cao đến thấp  (API và UI)
+Bài A06: Chức năng giỏ hàng, thanh toán
+Yêu cầu:
+Tìm hiểu và chọn các phương pháp quản lý state sau:
+Các phương pháp quản lý State trong React Native:
+Local State (useState / useReducer): Dùng cho dữ liệu chỉ cần thiết trong một component duy nhất hoặc các component con trực tiếp. Đây là cách cơ bản nhất để xử lý input, toggle, v.v.
+Context API: Giải pháp tích hợp sẵn của React để chia sẻ dữ liệu (như theme, thông tin user) qua nhiều component mà không cần "props drilling" (truyền props qua quá nhiều tầng).
+Zustand: Thư viện quản lý state nhẹ, đơn giản và hiệu suất cao, ngày càng phổ biến nhờ cú pháp tối giản và không cần thiết lập phức tạp như Redux.
+Redux / Redux Toolkit: Lựa chọn hàng đầu cho các ứng dụng lớn, yêu cầu quản lý trạng thái phức tạp, có tính dự báo cao và hệ sinh thái rộng lớn.
+TanStack Query (React Query): Chuyên dụng để quản lý state bất đồng bộ (server state), caching, và đồng bộ hóa dữ liệu từ API, giúp giảm bớt việc phải dùng global state cho dữ liệu server. 
+Lưu ý quan trọng:
+State trong React Native hoạt động bất đồng bộ (setState không update ngay lập tức), cần lưu ý khi cần giá trị mới nhất ngay sau khi set.
+Nên chia nhỏ component và tối ưu hóa việc render lại (re-render) để đảm bảo hiệu suất ứng dụng mượt mà. 
+Sử dụng AsyncStorage hoặc SQLite để lưu trữ dữ liệu cho ứng dụng nếu cần. 
+Chức năng hiển thị tất cả sản phẩm sử dụng Lazy loading (hoặc phân trang) để load tiếp sản phẩm khi kéo xuống cuối trang (API và UI) khi bấm vào từng category trên trang chủ ở bài tập A05.
+Xây dựng chức năng Giỏ hàng cho ứng dụng bán hàng (API + UI). Lưu trữ thông tin giỏ hàng bằng local database hoặc lưu trên API đều được.
+Xây dựng chức năng thanh toán đơn hàng với phương thức bắt buộc là COD, có thể tìm hiểu thêm về thanh toán thông qua ví điện tử,...
+Xây dựng chức năng theo dõi đơn hàng của người dùng gồm xem lại lịch sử mua hàng và theo dõi đơn hàng có xác định các trạng thái đơn hàng (1. đơn hàng mới, 2. Đã xác nhận đơn hàng (thủ công hoặc tự động 30 phút sau khi đơn đặt thành công), 3. Shop đang chuẩn bị hàng, 4. Đang giao hàng, 5. Đã giao thành công, 6. Hủy đơn hàng (chỉ cho phép hủy trước 30 phút sau khi đặt đơn, nếu đang ở bước 3 thì chuyển sang Gửi Yêu cầu hủy đơn cho shop)
+
