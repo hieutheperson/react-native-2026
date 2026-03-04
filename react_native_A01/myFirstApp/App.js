@@ -1,39 +1,25 @@
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { PaperProvider, DefaultTheme } from 'react-native-paper';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import AppNavigator from './src/navigation/AppNavigator';
 
-// NGĂN splash screen tự ẩn
-SplashScreen.preventAutoHideAsync();
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: '#FF6B35',
+    accent: '#FF6B35',
+  },
+};
 
 export default function App() {
-
-  useEffect(() => {
-    const prepare = async () => {
-      // Giả lập load data, config, font, api...
-      await new Promise(resolve => setTimeout(resolve, 10000));
-
-      // Sau khi xong thì ẩn splash screen
-      await SplashScreen.hideAsync();
-    };
-
-    prepare();
-  }, []);
-
   return (
-    <View style={styles.container}>
-      <Text>Hoang Ba Hieu</Text>
-      <Text>20110477</Text>
-      <StatusBar style="auto" />
-    </View>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <PaperProvider theme={theme}>
+        <StatusBar style="auto" />
+        <AppNavigator />
+      </PaperProvider>
+    </GestureHandlerRootView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
