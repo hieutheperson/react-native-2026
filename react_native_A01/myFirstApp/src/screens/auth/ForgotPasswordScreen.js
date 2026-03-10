@@ -20,7 +20,7 @@ export default function ForgotPasswordScreen({ navigation }) {
       const result = await forgotPassword({ email: email.trim() });
       Alert.alert(
         'Gửi OTP thành công',
-        `Mã OTP đã gửi đến ${email}\n\n🧪 OTP test: ${result.otp_for_testing}`,
+        `Mã OTP đã gửi đến ${email}. Vui lòng kiểm tra email.`,
         [{ text: 'Nhập OTP', onPress: () => navigation.navigate('OTPVerify', { type: 'forgot', email: email.trim() }) }]
       );
     } catch (e) {

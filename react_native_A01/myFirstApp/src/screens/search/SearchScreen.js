@@ -183,7 +183,7 @@ export default function SearchScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f5f5f5' },
-  searchBar: { margin: 12, elevation: 2, borderRadius: 12 },
+  searchBar: { margin: 12, elevation: 2, borderRadius: 12, height: 50 },
   chipList: { paddingHorizontal: 12, paddingBottom: 8 },
   chip: { marginHorizontal: 4, backgroundColor: '#e8e8e8' },
   chipSelected: { backgroundColor: '#FF6B35' },
@@ -208,5 +208,5 @@ const styles = StyleSheet.create({
   historyHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   historyTitle: { fontSize: 14, fontWeight: '600', color: '#333' },
   historyChips: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
-  historyChip: { marginBottom: 4, backgroundColor: '#f0f0f0' },
+  historyChip: { marginBottom: 4, backgroundColor: '#f0f0f0', height: 36 },
 });

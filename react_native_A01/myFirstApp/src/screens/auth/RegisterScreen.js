@@ -33,7 +33,7 @@ export default function RegisterScreen({ navigation }) {
       const result = await register({ email: email.trim(), password, fullName: fullName.trim(), phone: phone.trim() });
       Alert.alert(
         'Xác nhận OTP',
-        `Mã OTP đã gửi đến ${email}\n\n🧪 OTP test: ${result.otp_for_testing}`,
+        `Mã OTP đã gửi đến ${email}. Vui lòng kiểm tra email.`,
         [{ text: 'Nhập OTP', onPress: () => navigation.navigate('OTPVerify', { type: 'register', email }) }]
       );
     } catch (e) {

@@ -1,5 +1,5 @@
-// Auth Service - Mock implementation (swap to real API later)
 import { mockUsers, generateOTP, storeOTP, verifyOTP } from './mockData';
+import { sendOTPEmail } from './emailService';
 
 let users = [...mockUsers];
 let currentToken = null;
@@ -17,12 +17,14 @@ export const authService = {
     }
     const otp = generateOTP();
     storeOTP(`register_${email}`, otp);
-    console.log(`[MOCK OTP] Register OTP for ${email}: ${otp}`);
-    // Alert OTP for testing
+    // Gửi OTP qua email thật
+    const emailResult = await sendOTPEmail(email, otp, fullName);
+    if (!emailResult.success) {
+      console.warn('[OTP] Email gửi thất bại, OTP vẫn lưu local:', otp);
+    }
     return {
       success: true,
       message: `Mã OTP đã gửi đến ${email}`,
-      otp_for_testing: otp, // Remove in production
     };
   },
 
@@ -69,11 +71,14 @@ export const authService = {
     }
     const otp = generateOTP();
     storeOTP(`forgot_${email}`, otp);
-    console.log(`[MOCK OTP] Forgot Password OTP for ${email}: ${otp}`);
+    // Gửi OTP qua email thật
+    const emailResult = await sendOTPEmail(email, otp, user.fullName);
+    if (!emailResult.success) {
+      console.warn('[OTP] Email gửi thất bại, OTP vẫn lưu local:', otp);
+    }
     return {
       success: true,
       message: `Mã OTP đã gửi đến ${email}`,
-      otp_for_testing: otp,
     };
   },
 

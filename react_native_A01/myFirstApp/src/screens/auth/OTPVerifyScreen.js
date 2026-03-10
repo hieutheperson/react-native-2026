@@ -50,12 +50,9 @@ export default function OTPVerifyScreen({ navigation, route }) {
           <Text style={styles.email}>{email}</Text>
         </Text>
 
-        {otpData?.otp_for_testing && (
-          <View style={styles.testOtp}>
-            <Text style={styles.testOtpLabel}>🧪 Mã OTP test:</Text>
-            <Text style={styles.testOtpValue}>{otpData.otp_for_testing}</Text>
-          </View>
-        )}
+        <View style={styles.emailHint}>
+          <Text style={styles.emailHintText}>📧 Mã OTP đã gửi qua email. Kiểm tra hộp thư (cả Spam).</Text>
+        </View>
 
         <TextInput
           label="Nhập mã OTP (6 số)"
@@ -116,9 +113,8 @@ const styles = StyleSheet.create({
   title: { fontSize: 24, fontWeight: 'bold', color: '#FF6B35', marginBottom: 10 },
   subtitle: { fontSize: 14, color: '#666', textAlign: 'center', marginBottom: 10 },
   email: { fontWeight: 'bold', color: '#333' },
-  testOtp: { backgroundColor: '#fff3e0', padding: 12, borderRadius: 8, marginBottom: 16, alignItems: 'center', width: '100%', borderWidth: 1, borderColor: '#ffcc80' },
-  testOtpLabel: { fontSize: 13, color: '#666' },
-  testOtpValue: { fontSize: 28, fontWeight: 'bold', color: '#FF6B35', letterSpacing: 8, marginTop: 4 },
+  emailHint: { backgroundColor: '#e8f5e9', padding: 12, borderRadius: 8, marginBottom: 16, alignItems: 'center', width: '100%', borderWidth: 1, borderColor: '#a5d6a7' },
+  emailHintText: { fontSize: 13, color: '#2e7d32', textAlign: 'center' },
   input: { width: '100%', marginBottom: 12 },
   button: { width: '100%', marginTop: 8, borderRadius: 8 },
   buttonContent: { paddingVertical: 6 },

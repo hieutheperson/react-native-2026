@@ -4,28 +4,26 @@ import { TextInput, Button, Text } from 'react-native-paper';
 import useAuthStore from '../../store/authStore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { generateOTP, storeOTP, verifyOTP } from '../../services/mockData';
+import { sendOTPEmail } from '../../services/emailService';
 
 export default function ChangePhoneScreen({ navigation }) {
   const { user } = useAuthStore();
   const [step, setStep] = useState(1); // 1: enter phone, 2: verify OTP
   const [phone, setPhone] = useState('');
   const [otp, setOtp] = useState('');
-  const [mockOtp, setMockOtp] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSendOTP = () => {
+  const handleSendOTP = async () => {
     if (!/^0\d{9}$/.test(phone)) {
       return Alert.alert('Lỗi', 'Số điện thoại không hợp lệ');
     }
     setLoading(true);
-    setTimeout(() => {
-      const newOtp = generateOTP();
-      storeOTP(`phone_${phone}`, newOtp);
-      setMockOtp(newOtp);
-      setLoading(false);
-      setStep(2);
-      Alert.alert('OTP đã gửi', `🧪 Mã OTP test: ${newOtp}`);
-    }, 500);
+    const newOtp = generateOTP();
+    storeOTP(`phone_${phone}`, newOtp);
+    await sendOTPEmail(user?.email, newOtp, user?.fullName);
+    setLoading(false);
+    setStep(2);
+    Alert.alert('OTP đã gửi', `Mã OTP đã gửi đến email ${user?.email}. Kiểm tra hộp thư.`);
   };
 
   const handleVerify = () => {
@@ -56,7 +54,7 @@ export default function ChangePhoneScreen({ navigation }) {
         </>
       ) : (
         <>
-          <Text style={styles.otpHint}>🧪 OTP test: {mockOtp}</Text>
+          <Text style={styles.otpHint}>📧 OTP đã gửi qua email {user?.email}</Text>
           <TextInput label="Nhập mã OTP" value={otp} onChangeText={t => setOtp(t.replace(/[^0-9]/g, '').slice(0, 6))} mode="outlined" keyboardType="number-pad" style={styles.input} />
           <Button mode="contained" onPress={handleVerify} loading={loading} style={styles.button} buttonColor="#FF6B35">Xác nhận</Button>
         </>

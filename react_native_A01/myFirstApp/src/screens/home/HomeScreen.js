@@ -111,7 +111,7 @@ export default function HomeScreen({ navigation }) {
         decelerationRate="fast"
       />
 
-      {/* Categories - horizontal scroll (A05) */}
+      {/* Categories - horizontal scroll*/}
       <View style={styles.section}>
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>📂 Danh mục</Text>
@@ -126,7 +126,7 @@ export default function HomeScreen({ navigation }) {
         />
       </View>
 
-      {/* Top 10 best sellers - horizontal (A05) */}
+      {/* Top 10 best sellers - horizontal*/}
       <View style={styles.section}>
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>🔥 Top 10 bán chạy nhất</Text>
@@ -144,7 +144,7 @@ export default function HomeScreen({ navigation }) {
         />
       </View>
 
-      {/* Top 20 discounted - 2 column grid (A05) */}
+      {/* Top 20 discounted - 2 column grid*/}
       <View style={styles.section}>
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>🏷️ Giảm giá sốc (Top 20)</Text>

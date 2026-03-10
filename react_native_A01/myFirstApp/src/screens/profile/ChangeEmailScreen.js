@@ -4,28 +4,27 @@ import { TextInput, Button, Text } from 'react-native-paper';
 import useAuthStore from '../../store/authStore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { generateOTP, storeOTP, verifyOTP } from '../../services/mockData';
+import { sendOTPEmail } from '../../services/emailService';
 
 export default function ChangeEmailScreen({ navigation }) {
   const { user } = useAuthStore();
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
-  const [mockOtp, setMockOtp] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSendOTP = () => {
+  const handleSendOTP = async () => {
     if (!/\S+@\S+\.\S+/.test(email)) {
       return Alert.alert('Lỗi', 'Email không hợp lệ');
     }
     setLoading(true);
-    setTimeout(() => {
-      const newOtp = generateOTP();
-      storeOTP(`email_${email}`, newOtp);
-      setMockOtp(newOtp);
-      setLoading(false);
-      setStep(2);
-      Alert.alert('OTP đã gửi', `🧪 Mã OTP test: ${newOtp}`);
-    }, 500);
+    const newOtp = generateOTP();
+    storeOTP(`email_${email}`, newOtp);
+    // Gửi OTP đến email MỚI để xác thực
+    await sendOTPEmail(email, newOtp, user?.fullName);
+    setLoading(false);
+    setStep(2);
+    Alert.alert('OTP đã gửi', `Mã OTP đã gửi đến ${email}. Kiểm tra hộp thư.`);
   };
 
   const handleVerify = () => {
@@ -56,7 +55,7 @@ export default function ChangeEmailScreen({ navigation }) {
         </>
       ) : (
         <>
-          <Text style={styles.otpHint}>🧪 OTP test: {mockOtp}</Text>
+          <Text style={styles.otpHint}>📧 OTP đã gửi qua email {email}</Text>
           <TextInput label="Nhập mã OTP" value={otp} onChangeText={t => setOtp(t.replace(/[^0-9]/g, '').slice(0, 6))} mode="outlined" keyboardType="number-pad" style={styles.input} />
           <Button mode="contained" onPress={handleVerify} loading={loading} style={styles.button} buttonColor="#FF6B35">Xác nhận</Button>
         </>

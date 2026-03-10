@@ -133,18 +133,7 @@ export default function OrderDetailScreen({ route, navigation }) {
           </Button>
         )}
 
-        {/* Test button - advance status */}
-        {order.status < ORDER_STATUS.DELIVERED && order.status !== ORDER_STATUS.CANCELLED && (
-          <Button
-            mode="contained"
-            onPress={() => advanceOrderStatus(order.id)}
-            style={styles.testButton}
-            buttonColor="#4CAF50"
-            icon="arrow-right-circle"
-          >
-            🧪 Chuyển trạng thái tiếp
-          </Button>
-        )}
+        {/* API endpoint advanceOrderStatus(orderId) sẵn sàng cho Flutter admin */}
       </View>
 
       <View style={{ height: 30 }} />
@@ -181,6 +170,5 @@ const styles = StyleSheet.create({
   // Actions
   actions: { padding: 16 },
   cancelButton: { borderColor: '#FF3B30', borderRadius: 8, marginBottom: 10 },
-  testButton: { borderRadius: 8 },
   notFound: { textAlign: 'center', color: '#999', marginTop: 40 },
 });
